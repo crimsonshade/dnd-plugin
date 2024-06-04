@@ -1,0 +1,10 @@
+name: CRMSN
+version: '${project.version}'
+main: xyz.crmsn.minecraft.dnd.CRMSN
+api-version: '1.20'
+author: 'Crimsonshade'
+website: 'https\://github.com/crimsonshade'
+commands:
+  feed:
+    description: Feed yourself
+    usage: /<command>

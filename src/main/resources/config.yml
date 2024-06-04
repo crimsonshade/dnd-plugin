@@ -1,0 +1,12 @@
+dice:
+  menu:
+    title: '&3Würfel Menü'
+    lore: ['Öffnet ein Menü zur auswahl des richtigen Würfels']
+  die:
+    d4-skin: 'https://textures.minecraft.net/texture/41a2c088637fee9ae3a36dd496e876e657f509de55972dd17c18767eae1f3e9'
+    d6-skin: 'https://textures.minecraft.net/texture/f88fa973ea444cc808768ea48bf2657ae9a56c0af60275e84463b195629bce'
+    d8-skin: 'https://textures.minecraft.net/texture/1c3cec68769fe9c971291edb7ef96a4e3b60462cfd5fb5baa1cbb3a71513e7b'
+    d10-skin: 'https://textures.minecraft.net/texture/5339838139264de26665fc1c5b85d658989262692d385a2e5af7b8aea2bdc6'
+    d12-skin: 'https://textures.minecraft.net/texture/2328f378f28a9872226f5ce04d6e1dfa111618587f48dfa1fe82d043216a5cf'
+    d20-skin: 'https://textures.minecraft.net/texture/6b40e5db21cedac4c972b7b22ebb64cf4add61b3b54b131435eedd307598b7'
+    d100-skin: 'https://textures.minecraft.net/texture/915f7c313bca9c2f958e68ab14ab393867d67503affff8f20cb13fbe917fd31'
