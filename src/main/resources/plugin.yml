@@ -8,3 +8,6 @@ commands:
   feed:
     description: Feed yourself
     usage: /<command>
+  god:
+    description: Set yourself into God Mode
+    usage: /<command>
