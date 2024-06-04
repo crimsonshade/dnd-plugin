@@ -15,26 +15,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
-import xyz.crmsn.minecraft.dnd.CRMSN;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 public class RollInteractListener implements Listener {
-    private final CRMSN plugin;
+    private final FileConfiguration config;
 
-    public RollInteractListener(CRMSN plugin) {
-        this.plugin = plugin;
+    public RollInteractListener(FileConfiguration config) {
+        this.config = config;
     }
 
     @EventHandler
     public void onItemInteract(PlayerInteractEvent event) {
-        FileConfiguration config = plugin.getConfig();
-
         Player player = event.getPlayer();
 
 
@@ -46,8 +42,6 @@ public class RollInteractListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        FileConfiguration config = plugin.getConfig();
-
         if (event.getWhoClicked() instanceof Player) {
             Player player = (Player) event.getWhoClicked();
             if (event.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', config.getString("dice.menu.title")))) {
@@ -56,35 +50,36 @@ public class RollInteractListener implements Listener {
                 event.setCancelled(true);
 
                 Random random = new Random();
+                String itemName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
 
-                switch (event.getCurrentItem().getItemMeta().getDisplayName()) {
-                    case "D4":
+                switch (itemName) {
+                    case "W4":
                         int rand_d4 = random.nextInt(4) + 1;
-                        player.sendMessage(ChatColor.RED + "D4: " + rand_d4);
+                        player.sendMessage(ChatColor.RED + "W4: " + rand_d4);
                         break;
-                    case "D6":
+                    case "W6":
                         int rand_d6 = random.nextInt(6) + 1;
-                        player.sendMessage(ChatColor.AQUA + "D6: " + rand_d6);
+                        player.sendMessage(ChatColor.AQUA + "W6: " + rand_d6);
                         break;
-                    case "D8":
+                    case "W8":
                         int rand_d8 = random.nextInt(8) + 1;
-                        player.sendMessage(ChatColor.GREEN + "D8: " + rand_d8);
+                        player.sendMessage(ChatColor.GREEN + "W8: " + rand_d8);
                         break;
-                    case "D10":
+                    case "W10":
                         int rand_d10 = random.nextInt(10) + 1;
-                        player.sendMessage(ChatColor.LIGHT_PURPLE + "D10: " + rand_d10);
+                        player.sendMessage(ChatColor.LIGHT_PURPLE + "W10: " + rand_d10);
                         break;
-                    case "D12":
+                    case "W12":
                         int rand_d12 = random.nextInt(12) + 1;
-                        player.sendMessage(ChatColor.DARK_BLUE + "D12: " + rand_d12);
+                        player.sendMessage(ChatColor.DARK_BLUE + "W12: " + rand_d12);
                         break;
-                    case "D20":
+                    case "W20":
                         int rand_d20 = random.nextInt(20) + 1;
-                        player.sendMessage(ChatColor.GOLD + "D20: " + rand_d20);
+                        player.sendMessage(ChatColor.GOLD + "W20: " + rand_d20);
                         break;
-                    case "D100":
+                    case "W100":
                         int rand_d100 = random.nextInt(100) + 1;
-                        player.sendMessage(ChatColor.DARK_GRAY + "D100: " + rand_d100);
+                        player.sendMessage(ChatColor.DARK_GRAY + "W100: " + rand_d100);
                         break;
                 }
             }
@@ -94,15 +89,13 @@ public class RollInteractListener implements Listener {
     private void createClickableDice(Player player, FileConfiguration config) {
         Inventory menu = Bukkit.createInventory(player, 27, ChatColor.translateAlternateColorCodes('&', config.getString("dice.menu.title")));
 
-        ItemStack d4 = new ItemStack(Material.PLAYER_HEAD);
-        ItemStack d6 = new ItemStack(Material.PLAYER_HEAD);
-        ItemStack d8 = new ItemStack(Material.PLAYER_HEAD);
-        ItemStack d10 = new ItemStack(Material.PLAYER_HEAD);
-        ItemStack d100 = new ItemStack(Material.PLAYER_HEAD);
-        ItemStack d20 = new ItemStack(Material.PLAYER_HEAD);
-        ItemStack d12 = new ItemStack(Material.PLAYER_HEAD);
-
-        // d100.setItemMeta(addItemMeta(d100, "D100", "https://textures.minecraft.net/texture/915f7c313bca9c2f958e68ab14ab393867d67503affff8f20cb13fbe917fd31"));
+        ItemStack d4 = createDiceItem(config.getString("dice.die.d4.title"), config.getString("dice.die.d4.skin"), config.getStringList("dice.die.d4.lore"));
+        ItemStack d6 = createDiceItem(config.getString("dice.die.d6.title"), config.getString("dice.die.d6.skin"), config.getStringList("dice.die.d6.lore"));
+        ItemStack d8 = createDiceItem(config.getString("dice.die.d8.title"), config.getString("dice.die.d8.skin"), config.getStringList("dice.die.d8.lore"));
+        ItemStack d10 = createDiceItem(config.getString("dice.die.d10.title"), config.getString("dice.die.d10.skin"), config.getStringList("dice.die.d10.lore"));
+        ItemStack d12 = createDiceItem(config.getString("dice.die.d12.title"), config.getString("dice.die.d12.skin"), config.getStringList("dice.die.d12.lore"));
+        ItemStack d20 = createDiceItem(config.getString("dice.die.d20.title"), config.getString("dice.die.d20.skin"), config.getStringList("dice.die.d20.lore"));
+        ItemStack d100 = createDiceItem(config.getString("dice.die.d100.title"), config.getString("dice.die.d100.skin"), config.getStringList("dice.die.d100.lore"));
 
         menu.setItem(10, d4);
         menu.setItem(11, d6);
@@ -115,12 +108,15 @@ public class RollInteractListener implements Listener {
         player.openInventory(menu);
     }
 
-    private SkullMeta addItemMeta(ItemStack dice, String display_name, List lore, String url) {
+    private ItemStack createDiceItem(String displayName, String url, List<String> lore) {
+        ItemStack dice = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) dice.getItemMeta();
-        meta.setDisplayName(display_name);
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
         meta.setLore(lore);
         meta.setOwnerProfile(createProfile(url));
-        return meta;
+        dice.setItemMeta(meta);
+
+        return dice;
     }
 
     private PlayerProfile createProfile(String url) {

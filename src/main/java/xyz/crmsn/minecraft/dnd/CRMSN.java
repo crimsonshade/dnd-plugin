@@ -1,5 +1,6 @@
 package xyz.crmsn.minecraft.dnd;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.crmsn.minecraft.dnd.commands.FeedCommand;
 import xyz.crmsn.minecraft.dnd.listeners.JoinListener;
@@ -10,10 +11,14 @@ public final class CRMSN extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Save the default config if it doesn't already exist
+        saveDefaultConfig();
+
+        FileConfiguration config = getConfig();
         // Plugin startup logic
-        getServer().getPluginManager().registerEvents(new JoinListener(this), this);
-        getServer().getPluginManager().registerEvents(new RollInteractListener(this), this);
-        getServer().getPluginManager().registerEvents(new StickDiceListener(this), this);
+        getServer().getPluginManager().registerEvents(new JoinListener(config), this);
+        getServer().getPluginManager().registerEvents(new RollInteractListener(config), this);
+        getServer().getPluginManager().registerEvents(new StickDiceListener(config), this);
 
         getCommand("feed").setExecutor(new FeedCommand());
     }

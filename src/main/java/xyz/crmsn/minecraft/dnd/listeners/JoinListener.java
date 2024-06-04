@@ -19,10 +19,10 @@ import java.net.URL;
 import java.util.UUID;
 
 public class JoinListener implements Listener {
-    private final CRMSN plugin;
+    private final FileConfiguration config;
 
-    public JoinListener(CRMSN plugin) {
-        this.plugin = plugin;
+    public JoinListener(FileConfiguration config) {
+        this.config = config;
     }
 
     private final UUID randomID = UUID.randomUUID();
@@ -54,7 +54,7 @@ public class JoinListener implements Listener {
     }
 
     public ItemStack createCustomHead(String url) {
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = config.getConfig();
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta rollMeta = (SkullMeta) head.getItemMeta();
         assert rollMeta != null;

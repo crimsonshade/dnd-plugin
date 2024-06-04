@@ -1,7 +1,6 @@
 package xyz.crmsn.minecraft.dnd.listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -9,26 +8,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
-import xyz.crmsn.minecraft.dnd.CRMSN;
 
 public class StickDiceListener implements Listener {
 
-    private final CRMSN plugin;
+    private final FileConfiguration config;
 
-    public StickDiceListener(CRMSN plugin) {
-        this.plugin = plugin;
+    public StickDiceListener(FileConfiguration config) {
+        this.config = config;
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
-        FileConfiguration config = plugin.getConfig();
         if (event.getItemDrop().getItemStack().getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', config.getString("dice.menu.title")))) {
             event.setCancelled(true);
         }
     }
     @EventHandler
     public void onMove(InventoryClickEvent event) {
-        FileConfiguration config = plugin.getConfig();
         ItemStack currentItem = event.getCurrentItem();
         if (currentItem != null && currentItem.hasItemMeta() && currentItem.getItemMeta().hasDisplayName()) {
             String displayName = currentItem.getItemMeta().getDisplayName();
