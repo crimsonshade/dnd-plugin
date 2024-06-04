@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
-import xyz.crmsn.minecraft.dnd.CRMSN;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -54,7 +53,6 @@ public class JoinListener implements Listener {
     }
 
     public ItemStack createCustomHead(String url) {
-        FileConfiguration config = config.getConfig();
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta rollMeta = (SkullMeta) head.getItemMeta();
         assert rollMeta != null;
